@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = r'/Volumes/Local/HUST/ImageProcessing/Project/Project1Set2/object2.jpg'
+path = r'F:\Downloads\HUST\ImageProcessing\ImageProcessingProject\ObjectCounting\Project1Set2\object1.jpg'
 img = cv2.imread(path)
 
 if img is None:
