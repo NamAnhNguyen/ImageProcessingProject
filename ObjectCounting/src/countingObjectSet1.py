@@ -6,9 +6,7 @@ fig = plt.figure(figsize=(10, 7))
 figR = 3
 figC = 4
 
-
 def sinusNoise(img):
-
     try:
         cv2.imshow('image', img)
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -52,7 +50,6 @@ def sinusNoise(img):
 
     except Exception as e:
         print("eeeeee", e)
-
 
 path = r'ObjectCounting/Project1Set1/fade.png'
 img = cv2.imread(path)
@@ -116,7 +113,6 @@ try:
 
     print("Number of object", len(contours))
     plt.show()
-
 
 except Exception as e:
     print(e)
