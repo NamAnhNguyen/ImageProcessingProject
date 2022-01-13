@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 path = r'ObjectCounting/Project1Set2/object1.jpg'
+
 img = cv2.imread(path)
 
 if img is None:
