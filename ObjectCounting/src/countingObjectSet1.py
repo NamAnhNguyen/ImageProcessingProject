@@ -8,8 +8,6 @@ figC = 4
 
 def sinusNoise(img):
     try:
-        cv2.imshow('image', img)
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         dft = np.fft.fft2(img)
         dft_shift = np.fft.fftshift(dft)
         magnitude_spectrum_pre = 20 * np.log(np.abs(dft_shift))
@@ -51,18 +49,15 @@ def sinusNoise(img):
     except Exception as e:
         print("eeeeee", e)
 
-path = r'ObjectCounting/Project1Set1/fade.png'
+path = r'ObjectCounting/Project1Set1/sinus.png'
 img = cv2.imread(path)
 
 if img is None:
     print("check path")
     raise
 try:
-    cv2.imshow('Origin', img)
-
     # Lay anh da muc xam
     grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('Gray', grayImage)
     print(grayImage.shape)
 
     filterSinus = sinusNoise(grayImage)
@@ -100,7 +95,7 @@ try:
         rice, 100, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     # cv2.imshow("Adaptive Threshold", ret1)
     fig.add_subplot(figR, figC, 10), plt.imshow(ret1, cmap='gray')
-    plt.title('Threshhold Image'), plt.xticks([]), plt.yticks([])
+    plt.title('Threshold Image'), plt.xticks([]), plt.yticks([])
 
     contours, hierarchy = cv2.findContours(
         ret1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
