@@ -51,7 +51,7 @@ def sinusNoise(img):
         return img_back
 
     except Exception as e:
-        print("eeeeee", e)
+        print("Error", e)
 
 
 path = r'ObjectCounting/Project1Set1/fade.png'
@@ -61,29 +61,35 @@ if img is None:
     print("check path")
     raise
 try:
-    cv2.imshow('Origin', img)
+    # cv2.imshow('Origin', img)
 
-    # Lay anh da muc xam
+    # Lấy ảnh đa mức xám 
     grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('Gray', grayImage)
+    # cv2.imshow('Gray', grayImage)
     print(grayImage.shape)
 
+    # Lọc nhiễu Sin
     filterSinus = sinusNoise(grayImage)
 
+    # Lọc nhiễu muối tiêu
     medianImage = cv2.medianBlur(filterSinus, 5)
     fig.add_subplot(figR, figC, 5), plt.imshow(medianImage, cmap='gray')
     plt.title('Median'), plt.xticks([]), plt.yticks([])
+
+    # Lọc nhiễu ánh sáng bằng ngưỡng thích nghi
     ret2 = cv2.adaptiveThreshold(
         medianImage, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 127, -1)
     # cv2.imshow("Adaptive Threshold 2", ret2)
     fig.add_subplot(figR, figC, 6), plt.imshow(ret2, cmap='gray')
     plt.title('Adaptive Threshold 2'), plt.xticks([]), plt.yticks([])
 
+    # Lọc nhiễu muối tiêu một lần nữa
     medianImage2 = cv2.medianBlur(ret2, 7)
     # cv2.imshow('Median Image2', medianImage2)
     fig.add_subplot(figR, figC, 7), plt.imshow(medianImage2, cmap='gray')
     plt.title('Median Image 2'), plt.xticks([]), plt.yticks([])
 
+    # Phép co để tách lấy nền
     erodedKernel = np.ones((5, 5), np.uint8)
     erodedImg = cv2.erode(medianImage2, erodedKernel, iterations=5)
     # cv2.imshow("Eroded Img", erodedImg)
@@ -94,17 +100,20 @@ try:
     # dilatedImg = cv2.dilate(erodedImg, dilatedKernel, iterations=5)
     # cv2.imshow("Dilated Img", dilatedImg)
 
+    # Lấy chi tiết ảnh bằng cách lấy ảnh gốc trừ đi nền
     rice = medianImage2 - erodedImg
     # cv2.imshow("Rice Img", rice)
     fig.add_subplot(figR, figC, 9), plt.imshow(rice, cmap='gray')
     plt.title('Rice Image'), plt.xticks([]), plt.yticks([])
 
+    # Lấy ảnh nhị phân bằng phương pháp lấy ngưỡng
     th1, ret1 = cv2.threshold(
         rice, 100, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     # cv2.imshow("Adaptive Threshold", ret1)
     fig.add_subplot(figR, figC, 10), plt.imshow(ret1, cmap='gray')
     plt.title('Threshhold Image'), plt.xticks([]), plt.yticks([])
 
+    # Đếm số vật thể
     contours, hierarchy = cv2.findContours(
         ret1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     rgb = img.copy()
@@ -119,5 +128,5 @@ try:
 
 
 except Exception as e:
-    print(e)
+    print("Error", e)
 cv2.waitKey()
