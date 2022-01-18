@@ -6,7 +6,7 @@ fig = plt.figure(figsize=(10, 7))
 figR = 2
 figC = 3
 
-path = r'ObjectCounting\Project1Set2\object2.jpg'
+path = r'ObjectCounting/Project1Set2/object4.jpg'
 img = cv2.imread(path)
 
 if img is None:

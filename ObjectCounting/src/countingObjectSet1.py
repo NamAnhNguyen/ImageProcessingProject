@@ -8,7 +8,7 @@ figC = 4
 
 def sinusNoise(img):
     try:
-        cv2.imshow('image', img)
+        # cv2.imshow('image', img)
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         dft = np.fft.fft2(img)
         dft_shift = np.fft.fftshift(dft)
@@ -51,7 +51,7 @@ def sinusNoise(img):
     except Exception as e:
         print("Error", e)
 
-path = r'ObjectCounting/Project1Set1/fade.png'
+path = r'ObjectCounting/Project1Set1/sinus.png'
 img = cv2.imread(path)
 
 if img is None:
@@ -86,38 +86,14 @@ try:
     fig.add_subplot(figR, figC, 7), plt.imshow(medianImage2, cmap='gray')
     plt.title('Median Image 2'), plt.xticks([]), plt.yticks([])
 
-    # Phép co để tách lấy nền
-    erodedKernel = np.ones((5, 5), np.uint8)
-    erodedImg = cv2.erode(medianImage2, erodedKernel, iterations=5)
-    # cv2.imshow("Eroded Img", erodedImg)
-    fig.add_subplot(figR, figC, 8), plt.imshow(erodedImg, cmap='gray')
-    plt.title('Erode Image'), plt.xticks([]), plt.yticks([])
-
-    # dilatedKernel = np.ones((5, 5), np.uint8)
-    # dilatedImg = cv2.dilate(erodedImg, dilatedKernel, iterations=5)
-    # cv2.imshow("Dilated Img", dilatedImg)
-
-    # Lấy chi tiết ảnh bằng cách lấy ảnh gốc trừ đi nền
-    rice = medianImage2 - erodedImg
-    # cv2.imshow("Rice Img", rice)
-    fig.add_subplot(figR, figC, 9), plt.imshow(rice, cmap='gray')
-    plt.title('Rice Image'), plt.xticks([]), plt.yticks([])
-
-    # Lấy ảnh nhị phân bằng phương pháp lấy ngưỡng
-    th1, ret1 = cv2.threshold(
-        rice, 100, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    # cv2.imshow("Adaptive Threshold", ret1)
-    fig.add_subplot(figR, figC, 10), plt.imshow(ret1, cmap='gray')
-    plt.title('Threshhold Image'), plt.xticks([]), plt.yticks([])
-
     # Đếm số vật thể
     contours, hierarchy = cv2.findContours(
-        ret1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        medianImage2, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     rgb = img.copy()
     cv2.drawContours(rgb, contours, -1, (0, 255, 0), 1)
 
     # cv2.imshow("Contour", rgb)
-    fig.add_subplot(figR, figC, 11), plt.imshow(rgb)
+    fig.add_subplot(figR, figC, 8), plt.imshow(rgb)
     plt.title('Contour Image'), plt.xticks([]), plt.yticks([])
 
     print("Number of object", len(contours))
