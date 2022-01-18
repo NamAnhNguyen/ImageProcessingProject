@@ -8,8 +8,6 @@ figC = 4
 
 def sinusNoise(img):
     try:
-        # cv2.imshow('image', img)
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         dft = np.fft.fft2(img)
         dft_shift = np.fft.fftshift(dft)
         magnitude_spectrum_pre = 20 * np.log(np.abs(dft_shift))
@@ -85,7 +83,6 @@ try:
     # cv2.imshow('Median Image2', medianImage2)
     fig.add_subplot(figR, figC, 7), plt.imshow(medianImage2, cmap='gray')
     plt.title('Median Image 2'), plt.xticks([]), plt.yticks([])
-
     # Đếm số vật thể
     contours, hierarchy = cv2.findContours(
         medianImage2, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
