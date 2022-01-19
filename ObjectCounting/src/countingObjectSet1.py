@@ -49,7 +49,7 @@ def sinusNoise(img):
     except Exception as e:
         print("Error", e)
 
-path = r'ObjectCounting/Project1Set1/sinus.png'
+path = r'Project1Set1/fade.png'
 img = cv2.imread(path)
 
 if img is None:
@@ -108,9 +108,9 @@ try:
     fig.add_subplot(figR, figC, 10), plt.imshow(ret1, cmap='gray')
     plt.title('Threshold Image'), plt.xticks([]), plt.yticks([])
 
-    # Đếm số vật thể
+    # Đếm số vật thể medianImage2/ret1
     contours, hierarchy = cv2.findContours(
-        ret1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        medianImage2, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     rgb = img.copy()
     cv2.drawContours(rgb, contours, -1, (0, 255, 0), 1)
 
