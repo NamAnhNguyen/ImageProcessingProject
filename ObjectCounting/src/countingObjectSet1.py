@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 fig = plt.figure(figsize=(10, 7))
 figR = 3
-figC = 4
+figC = 3
 
 def sinusNoise(img):
     try:
@@ -83,39 +83,14 @@ try:
     # cv2.imshow('Median Image2', medianImage2)
     fig.add_subplot(figR, figC, 7), plt.imshow(medianImage2, cmap='gray')
     plt.title('Median Image 2'), plt.xticks([]), plt.yticks([])
-
-    # Phép co để tách lấy nền
-    erodedKernel = np.ones((5, 5), np.uint8)
-    erodedImg = cv2.erode(medianImage2, erodedKernel, iterations=5)
-    # cv2.imshow("Eroded Img", erodedImg)
-    fig.add_subplot(figR, figC, 8), plt.imshow(erodedImg, cmap='gray')
-    plt.title('Erode Image'), plt.xticks([]), plt.yticks([])
-
-    # dilatedKernel = np.ones((5, 5), np.uint8)
-    # dilatedImg = cv2.dilate(erodedImg, dilatedKernel, iterations=5)
-    # cv2.imshow("Dilated Img", dilatedImg)
-
-    # Lấy chi tiết ảnh bằng cách lấy ảnh gốc trừ đi nền
-    rice = medianImage2 - erodedImg
-    # cv2.imshow("Rice Img", rice)
-    fig.add_subplot(figR, figC, 9), plt.imshow(rice, cmap='gray')
-    plt.title('Rice Image'), plt.xticks([]), plt.yticks([])
-
-    # Lấy ảnh nhị phân bằng phương pháp lấy ngưỡng
-    th1, ret1 = cv2.threshold(
-        rice, 100, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    # cv2.imshow("Adaptive Threshold", ret1)
-    fig.add_subplot(figR, figC, 10), plt.imshow(ret1, cmap='gray')
-    plt.title('Threshold Image'), plt.xticks([]), plt.yticks([])
-
-    # Đếm số vật thể medianImage2/ret1
+    # Đếm số vật thể
     contours, hierarchy = cv2.findContours(
         medianImage2, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     rgb = img.copy()
     cv2.drawContours(rgb, contours, -1, (0, 255, 0), 1)
 
     # cv2.imshow("Contour", rgb)
-    fig.add_subplot(figR, figC, 11), plt.imshow(rgb)
+    fig.add_subplot(figR, figC, 8), plt.imshow(rgb)
     plt.title('Contour Image'), plt.xticks([]), plt.yticks([])
 
     print("Number of object", len(contours))
